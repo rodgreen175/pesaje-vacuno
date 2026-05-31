@@ -1,318 +1,270 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pesaje de Vacunos | Registro Ganadero</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #3b6e47 0%, #1f4d2e 100%);
-            min-height: 100vh;
-            padding: 1.5rem;
-            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: #fef7e8;
-            border-radius: 3rem 2rem 3rem 2rem;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: #d9c48b;
-            padding: 1.2rem;
-            text-align: center;
-            border-bottom: 5px solid #a57c3c;
-        }
-
-        .header h1 {
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #2c4820;
-        }
-
-        .peso-area {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .display-peso {
-            background: #2b2a24;
-            border-radius: 4rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .peso-number {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #f9eec1;
-            font-family: monospace;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 60px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #8b6942;
-            transition: 0.05s linear;
-        }
-
-        .btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #8b6942;
-        }
-
-        .btn-primary {
-            background: #6c9e4a;
-            color: white;
-        }
-
-        .btn-danger {
-            background: #ca6f4b;
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #b7a06e;
-        }
-
-        .registro {
-            background: #ebdfbf;
-            margin: 1rem;
-            padding: 1rem;
-            border-radius: 2rem;
-        }
-
-        .registro h3 {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .lista-registro {
-            max-height: 250px;
-            overflow-y: auto;
-            list-style: none;
-        }
-
-        .lista-registro li {
-            background: white;
-            margin: 6px 0;
-            padding: 8px 12px;
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-        }
-
-        .vacuno-icon {
-            font-size: 1.2rem;
-        }
-
-        .btn-reset {
-            background: #a5834e;
-            color: white;
-            margin-top: 8px;
-            width: 100%;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 0.7rem;
-            padding: 1rem;
-            color: #7f673f;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Pesaje de Vacunos - CC y Observaciones</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f4f3ef; font-family: Arial, sans-serif; padding: 10px; }
+  .app { max-width: 480px; margin: auto; }
+  .header { background: #185FA5; padding: 15px; border-radius: 12px; color: white; margin-bottom: 15px; text-align: center; }
+  .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+  .field-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+  .field { flex: 1; min-width: 120px; }
+  .field-full { width: 100%; margin-bottom: 15px; }
+  .field input, .field select, .field textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+  .field input { font-size: 24px; text-align: center; height: 50px; }
+  .field textarea { resize: vertical; font-family: inherit; }
+  button { width: 100%; height: 50px; background: #185FA5; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; margin-top: 10px; cursor: pointer; transition: opacity 0.2s; }
+  button:active { opacity: 0.8; }
+  .stats { display: flex; gap: 10px; margin-bottom: 15px; }
+  .stat { background: white; flex: 1; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; vertical-align: top; }
+  .del-btn { background: #A32D2D; color: white; border: none; padding: 5px 10px; border-radius: 5px; width: auto; margin: 0; cursor: pointer; font-size: 12px; }
+  .delete-all-btn { background: #A32D2D; margin-top: 15px; }
+  .export-btn { background: #0F6E56; }
+  .cc-badge { display: inline-block; background: #e9ecef; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+  .obs-preview { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .button-group { display: flex; gap: 10px; margin-top: 15px; }
+  .button-group button { margin-top: 0; flex: 1; }
+  .opcional { font-size: 11px; color: #666; margin-top: 4px; display: block; }
+  .requerido { color: #d32f2f; font-size: 11px; margin-top: 4px; display: block; }
+  .campo-obligatorio::after { content: " *"; color: #d32f2f; font-weight: bold; }
+  @media (max-width: 480px) {
+    th, td { font-size: 12px; padding: 6px 4px; }
+    .del-btn { padding: 4px 8px; }
+  }
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
-        <div class="header">
-            <h1>
-                🐄 Pesaje de Vacunos
-                <span>🐂</span>
-            </h1>
-            <p>Registro de kilos por animal</p>
-        </div>
+<div class="app">
+  <div class="header">
+    <h1>🐄 Pesaje de Vacunos</h1>
+    <p style="font-size:12px; margin-top:5px;">Caravana obligatoria + al menos un dato adicional</p>
+  </div>
 
-        <div class="peso-area">
-            <div class="display-peso">
-                <div class="peso-number" id="pesoActual">0</div>
-                <div style="color:#ddd;">kg</div>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-primary" id="mas10">+10 kg</button>
-                <button class="btn btn-primary" id="mas1">+1 kg</button>
-                <button class="btn btn-danger" id="menos1">-1 kg</button>
-                <button class="btn btn-danger" id="menos10">-10 kg</button>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-secondary" id="guardarPeso">💾 Guardar peso actual</button>
-                <button class="btn btn-danger" id="reiniciarPeso">🔄 Reiniciar a 0 kg</button>
-            </div>
-        </div>
-
-        <div class="registro">
-            <h3>📋 Últimos pesajes registrados</h3>
-            <ul class="lista-registro" id="listaPesajes">
-                <li style="justify-content:center; color:#7f6b3a;">✨ Aún sin registros ✨</li>
-            </ul>
-            <button class="btn btn-reset" id="borrarHistorial">🗑️ Borrar historial de pesajes</button>
-        </div>
-
-        <div class="footer">
-            🧾 Cada guardado registra el peso actual | Ideal para control ganadero
-        </div>
+  <div class="card">
+    <div class="field-row">
+      <div class="field"><input type="tel" id="caravana" maxlength="4" placeholder="Caravana * 4 díg"></div>
+      <div class="field"><input type="tel" id="peso" maxlength="3" placeholder="Peso kg"></div>
     </div>
+    <div class="field-row">
+      <div class="field">
+        <select id="condicionCorporal">
+          <option value="">CC (opcional)</option>
+          <option value="2">2 - Flaca</option>
+          <option value="3">3 - Carnuda</option>
+          <option value="4">4 - Pulpuda</option>
+          <option value="5">5 - Medio engorde</option>
+          <option value="6">6 - Gorda</option>
+        </select>
+        <span class="opcional">📌 Opcional</span>
+      </div>
+      <div class="field">
+        <input type="text" id="observaciones" placeholder="Observaciones">
+        <span class="opcional">📝 Opcional</span>
+      </div>
+    </div>
+    <div style="background: #e3f2fd; padding: 8px; border-radius: 6px; margin-top: 5px; font-size: 12px; color: #1565c0;">
+      ℹ️ <strong>Caravana es obligatoria</strong> + al menos uno de: Peso, CC u Observaciones
+    </div>
+    <button onclick="agregar()">➕ REGISTRAR</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="totalAnimales">0</b><br>Animales</div>
+    <div class="stat"><b id="promedioKg">—</b><br>Promedio kg</div>
+    <div class="stat"><b id="sumaKg">—</b><br>Total kg</div>
+  </div>
+
+  <div class="card">
+    <div id="lista"></div>
+    <div class="button-group">
+      <button class="export-btn" onclick="exportar()">📊 EXPORTAR</button>
+      <button class="delete-all-btn" onclick="borrarTodo()">🗑️ BORRAR TODO</button>
+    </div>
+  </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-    let pesoActual = 0;
-    let historialPesajes = [];
+let registros = [];
 
-    const pesoActualSpan = document.getElementById('pesoActual');
-    const listaPesajesUl = document.getElementById('listaPesajes');
+function guardar() { localStorage.setItem('pesajeDatos', JSON.stringify(registros)); }
+function cargar() {
+  let data = localStorage.getItem('pesajeDatos');
+  if (data) { registros = JSON.parse(data); }
+  mostrar();
+}
 
-    function cargarDatos() {
-        const guardado = localStorage.getItem('pesaje_vacunos');
-        if (guardado) {
-            try {
-                const data = JSON.parse(guardado);
-                pesoActual = data.pesoActual || 0;
-                historialPesajes = data.historialPesajes || [];
-            } catch(e) {}
-        }
-        actualizarPantalla();
-        mostrarHistorial();
+function agregar() {
+  let car = document.getElementById('caravana').value.trim();
+  let pes = parseInt(document.getElementById('peso').value);
+  let cc = document.getElementById('condicionCorporal').value;
+  let observaciones = document.getElementById('observaciones').value.trim();
+  
+  // Validación: Caravana es OBLIGATORIA
+  if (!/^\d{4}$/.test(car)) { 
+    alert('❌ Caravana es obligatoria: debe tener 4 dígitos'); 
+    document.getElementById('caravana').focus();
+    return; 
+  }
+  
+  // Validación: Al menos uno de los otros tres campos debe tener información
+  let tienePeso = !isNaN(pes) && pes >= 1 && pes <= 999;
+  let tieneCC = cc !== null && cc !== '';
+  let tieneObservaciones = observaciones !== null && observaciones !== '';
+  
+  if (!tienePeso && !tieneCC && !tieneObservaciones) {
+    alert('⚠️ Debe completar al menos uno de estos campos:\n- Peso (1-999 kg)\n- Condición Corporal\n- Observaciones');
+    return;
+  }
+  
+  // Validar que si tiene peso, sea válido
+  if (tienePeso && (isNaN(pes) || pes < 1 || pes > 999)) {
+    alert('⚠️ Si ingresa peso, debe ser entre 1 y 999 kg');
+    document.getElementById('peso').focus();
+    return;
+  }
+  
+  // Validar duplicado por caravana (único identificador)
+  if (registros.find(r => r.caravana === car)) { 
+    alert(`🐄 La caravana ${car} ya está registrada. No se permiten duplicados.`); 
+    document.getElementById('caravana').value = '';
+    document.getElementById('caravana').focus();
+    return; 
+  }
+  
+  // Crear nuevo registro - peso puede ser null si no se ingresó
+  let pesoFinal = tienePeso ? pes : null;
+  
+  registros.push({ 
+    caravana: car, 
+    peso: pesoFinal, 
+    condicionCorporal: cc || '', 
+    observaciones: observaciones || '',
+    fecha: new Date().toLocaleDateString(), 
+    hora: new Date().toLocaleTimeString() 
+  });
+  
+  guardar();
+  // Limpiar campos
+  document.getElementById('caravana').value = '';
+  document.getElementById('peso').value = '';
+  document.getElementById('observaciones').value = '';
+  document.getElementById('condicionCorporal').value = '';
+  document.getElementById('caravana').focus();
+  mostrar();
+}
+
+function eliminar(i) {
+  if (confirm(`¿Eliminar el registro de caravana ${registros[i].caravana}?`)) { 
+    registros.splice(i, 1); 
+    guardar(); 
+    mostrar(); 
+  }
+}
+
+function borrarTodo() {
+  if (registros.length === 0) {
+    alert('📭 No hay registros para borrar');
+    return;
+  }
+  if (confirm(`¿Borrar todos los ${registros.length} registros?`)) {
+    registros = [];
+    guardar();
+    mostrar();
+  }
+}
+
+function mostrar() {
+  let n = registros.length;
+  document.getElementById('totalAnimales').innerText = n;
+  
+  // Calcular estadísticas solo con los que tienen peso
+  let registrosConPeso = registros.filter(r => r.peso !== null && r.peso > 0);
+  let total = registrosConPeso.reduce((s, r) => s + r.peso, 0);
+  let promedio = registrosConPeso.length > 0 ? Math.round(total / registrosConPeso.length) : 0;
+  
+  if (n === 0) {
+    document.getElementById('promedioKg').innerText = '—';
+    document.getElementById('sumaKg').innerText = '—';
+    document.getElementById('lista').innerHTML = '<div style="text-align:center;color:#999; padding:20px;">🐄 Sin registros</div>';
+    return;
+  }
+  
+  document.getElementById('promedioKg').innerText = registrosConPeso.length > 0 ? promedio : '—';
+  document.getElementById('sumaKg').innerText = registrosConPeso.length > 0 ? total : '—';
+  
+  let html = '<div style="overflow-x: auto;"><table style="min-width: 400px;">';
+  html += '<thead><tr>' +
+          '<th>#</th><th>Caravana</th><th>Kg</th><th>CC</th><th>Observaciones</th><th>Fecha</th><th>Hora</th><th></th>' +
+          '</tr></thead><tbody>';
+  
+  registros.forEach((r, i) => {
+    // Mostrar peso - si es null muestra —
+    let pesoDisplay = r.peso ? r.peso : '—';
+    // Mostrar CC - si está vacío muestra —
+    let ccDisplay = r.condicionCorporal ? `<span class="cc-badge">CC: ${r.condicionCorporal}</span>` : '—';
+    // Mostrar observaciones - si está vacío muestra —
+    let obsText = r.observaciones || '—';
+    let obsDisplay = obsText !== '—' ? `<span class="obs-preview" title="${obsText.replace(/"/g, '&quot;')}">${obsText.length > 20 ? obsText.substring(0, 18)+'…' : obsText}</span>` : '—';
+    
+    html += `<tr>
+              <td>${i+1}</td>
+              <td><strong>${r.caravana}</strong></td>
+              <td>${pesoDisplay}</td>
+              <td style="text-align:center;">${ccDisplay}</td>
+              <td>${obsDisplay}</td>
+              <td style="font-size:11px;">${r.fecha}</td>
+              <td style="font-size:11px;">${r.hora}</td>
+              <td><button class="del-btn" onclick="eliminar(${i})">🗑️</button></td>
+            </tr>`;
+  });
+  html += '</tbody><table></div>';
+  document.getElementById('lista').innerHTML = html;
+}
+
+function exportar() {
+  if (registros.length === 0) { 
+    alert('📭 No hay datos para exportar'); 
+    return; 
+  }
+  
+  let datos = [['Caravana', 'Peso (kg)', 'Condición Corporal (CC)', 'Observaciones', 'Fecha', 'Hora']];
+  registros.forEach(r => {
+    datos.push([
+      r.caravana, 
+      r.peso || '', 
+      r.condicionCorporal || '', 
+      r.observaciones || '', 
+      r.fecha, 
+      r.hora
+    ]);
+  });
+  
+  let wb = XLSX.utils.book_new();
+  let ws = XLSX.utils.aoa_to_sheet(datos);
+  ws['!cols'] = [{wch:10}, {wch:8}, {wch:18}, {wch:30}, {wch:12}, {wch:10}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Pesaje_CC_Observaciones');
+  XLSX.writeFile(wb, `pesaje_vacunos_${new Date().toISOString().slice(0,10)}.xlsx`);
+  alert('✅ Archivo Excel generado correctamente');
+}
+
+cargar();
+
+document.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    let active = document.activeElement;
+    if (active && (active.id === 'caravana' || active.id === 'peso' || active.id === 'observaciones' || active.id === 'condicionCorporal')) {
+      e.preventDefault();
+      agregar();
     }
-
-    function guardarDatos() {
-        const datos = {
-            pesoActual: pesoActual,
-            historialPesajes: historialPesajes
-        };
-        localStorage.setItem('pesaje_vacunos', JSON.stringify(datos));
-    }
-
-    function actualizarPantalla() {
-        pesoActualSpan.innerText = pesoActual;
-    }
-
-    function mostrarHistorial() {
-        listaPesajesUl.innerHTML = '';
-        if (historialPesajes.length === 0) {
-            listaPesajesUl.innerHTML = '<li style="justify-content:center; color:#7f6b3a;">🐄 No hay pesajes guardados aún</li>';
-            return;
-        }
-        const ultimos = [...historialPesajes].reverse().slice(0, 15);
-        ultimos.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span>🐂 ${item.fecha}</span><span><strong>${item.peso} kg</strong></span>`;
-            listaPesajesUl.appendChild(li);
-        });
-    }
-
-    function guardarPesoActual() {
-        const ahora = new Date();
-        const fechaStr = `${ahora.toLocaleDateString()} ${ahora.toLocaleTimeString()}`;
-        historialPesajes.push({
-            fecha: fechaStr,
-            peso: pesoActual,
-            timestamp: ahora.getTime()
-        });
-        if (historialPesajes.length > 50) {
-            historialPesajes = historialPesajes.slice(-50);
-        }
-        guardarDatos();
-        mostrarHistorial();
-        const msg = document.createElement('div');
-        msg.innerText = `✅ Peso ${pesoActual} kg guardado`;
-        msg.style.position = 'fixed';
-        msg.style.bottom = '20px';
-        msg.style.left = '50%';
-        msg.style.transform = 'translateX(-50%)';
-        msg.style.backgroundColor = '#2e5c35';
-        msg.style.color = 'white';
-        msg.style.padding = '8px 20px';
-        msg.style.borderRadius = '40px';
-        msg.style.zIndex = '999';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 1500);
-    }
-
-    function modificarPeso(cambio) {
-        let nuevoPeso = pesoActual + cambio;
-        if (nuevoPeso < 0) nuevoPeso = 0;
-        pesoActual = nuevoPeso;
-        actualizarPantalla();
-        guardarDatos();
-    }
-
-    function reiniciarPesoCero() {
-        if (pesoActual === 0) {
-            const msg = document.createElement('div');
-            msg.innerText = '⚠️ Ya está en 0 kg';
-            msg.style.cssText = 'position:fixed; bottom:70px; left:50%; transform:translateX(-50%); background:#a55233; color:white; padding:6px 16px; border-radius:30px; z-index:1000;';
-            document.body.appendChild(msg);
-            setTimeout(() => msg.remove(), 1200);
-            return;
-        }
-        pesoActual = 0;
-        actualizarPantalla();
-        guardarDatos();
-    }
-
-    function borrarTodoHistorial() {
-        if (historialPesajes.length === 0) return;
-        historialPesajes = [];
-        guardarDatos();
-        mostrarHistorial();
-        const msg = document.createElement('div');
-        msg.innerText = '📋 Historial de pesajes borrado';
-        msg.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#604e2c; color:#f9eec1; padding:5px 18px; border-radius:40px; z-index:1000;';
-        document.body.appendChild(msg);
-        setTimeout(() => msg.remove(), 1500);
-    }
-
-    document.getElementById('mas10').addEventListener('click', () => modificarPeso(10));
-    document.getElementById('mas1').addEventListener('click', () => modificarPeso(1));
-    document.getElementById('menos1').addEventListener('click', () => modificarPeso(-1));
-    document.getElementById('menos10').addEventListener('click', () => modificarPeso(-10));
-    document.getElementById('guardarPeso').addEventListener('click', guardarPesoActual);
-    document.getElementById('reiniciarPeso').addEventListener('click', reiniciarPesoCero);
-    document.getElementById('borrarHistorial').addEventListener('click', borrarTodoHistorial);
-
-    cargarDatos();
+  }
+});
 </script>
 </body>
 </html>
