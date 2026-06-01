@@ -265,14 +265,3 @@ document.addEventListener('keypress', function(e) {
 </script>
 </body>
 </html>
-✅ Cambio realizado:
-Eliminé este bloque de código (líneas 106-111 en la versión anterior):
-
-javascript
-// Validar duplicado por caravana (único identificador)
-if (registros.find(r => r.caravana === car)) { 
-  alert(`🐄 La caravana ${car} ya está registrada. No se permiten duplicados.`); 
-  document.getElementById('caravana').value = '';
-  document.getElementById('caravana').focus();
-  return; 
-}
