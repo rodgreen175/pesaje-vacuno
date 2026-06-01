@@ -56,9 +56,13 @@
         <select id="condicionCorporal">
           <option value="">CC (opcional)</option>
           <option value="2">2 - Flaca</option>
+          <option value="2.5">2.5</option>
           <option value="3">3 - Carnuda</option>
+          <option value="3.5">3.5</option>
           <option value="4">4 - Pulpuda</option>
+          <option value="4.5">4.5</option>
           <option value="5">5 - Medio engorde</option>
+          <option value="5.5">5.5</option>
           <option value="6">6 - Gorda</option>
         </select>
         <span class="opcional">📌 Opcional</span>
@@ -83,8 +87,8 @@
   <div class="card">
     <div id="lista"></div>
     <div class="button-group">
-      <button class="export-btn" onclick="exportar()">📊 EXPORTAR</button>
       <button class="delete-all-btn" onclick="borrarTodo()">🗑️ BORRAR TODO</button>
+      <button class="export-btn" onclick="exportar()">📊 EXPORTAR Y LIMPIAR</button>
     </div>
   </div>
 </div>
@@ -130,13 +134,7 @@ function agregar() {
     return;
   }
   
-  // Validar duplicado por caravana (único identificador)
-  if (registros.find(r => r.caravana === car)) { 
-    alert(`🐄 La caravana ${car} ya está registrada. No se permiten duplicados.`); 
-    document.getElementById('caravana').value = '';
-    document.getElementById('caravana').focus();
-    return; 
-  }
+  // ⚠️ RESTRICCIÓN DE DUPLICADOS ELIMINADA - Ya no verifica si la caravana existe
   
   // Crear nuevo registro - peso puede ser null si no se ingresó
   let pesoFinal = tienePeso ? pes : null;
@@ -202,21 +200,18 @@ function mostrar() {
   let html = '<div style="overflow-x: auto;"><table style="min-width: 400px;">';
   html += '<thead><tr>' +
           '<th>#</th><th>Caravana</th><th>Kg</th><th>CC</th><th>Observaciones</th><th>Fecha</th><th>Hora</th><th></th>' +
-          '</tr></thead><tbody>';
+          '</thead><tbody>';
   
   registros.forEach((r, i) => {
-    // Mostrar peso - si es null muestra —
     let pesoDisplay = r.peso ? r.peso : '—';
-    // Mostrar CC - si está vacío muestra —
     let ccDisplay = r.condicionCorporal ? `<span class="cc-badge">CC: ${r.condicionCorporal}</span>` : '—';
-    // Mostrar observaciones - si está vacío muestra —
     let obsText = r.observaciones || '—';
     let obsDisplay = obsText !== '—' ? `<span class="obs-preview" title="${obsText.replace(/"/g, '&quot;')}">${obsText.length > 20 ? obsText.substring(0, 18)+'…' : obsText}</span>` : '—';
     
     html += `<tr>
-              <td>${i+1}</td>
-              <td><strong>${r.caravana}</strong></td>
-              <td>${pesoDisplay}</td>
+               <td>${i+1}</td>
+               <td><strong>${r.caravana}</strong></td>
+               <td>${pesoDisplay}</td>
               <td style="text-align:center;">${ccDisplay}</td>
               <td>${obsDisplay}</td>
               <td style="font-size:11px;">${r.fecha}</td>
@@ -224,7 +219,7 @@ function mostrar() {
               <td><button class="del-btn" onclick="eliminar(${i})">🗑️</button></td>
             </tr>`;
   });
-  html += '</tbody><table></div>';
+  html += '</tbody></table></div>';
   document.getElementById('lista').innerHTML = html;
 }
 
@@ -251,7 +246,9 @@ function exportar() {
   ws['!cols'] = [{wch:10}, {wch:8}, {wch:18}, {wch:30}, {wch:12}, {wch:10}];
   XLSX.utils.book_append_sheet(wb, ws, 'Pesaje_CC_Observaciones');
   XLSX.writeFile(wb, `pesaje_vacunos_${new Date().toISOString().slice(0,10)}.xlsx`);
-  alert('✅ Archivo Excel generado correctamente');
+  registros = [];
+  guardar();
+  mostrar();
 }
 
 cargar();
@@ -268,3 +265,14 @@ document.addEventListener('keypress', function(e) {
 </script>
 </body>
 </html>
+✅ Cambio realizado:
+Eliminé este bloque de código (líneas 106-111 en la versión anterior):
+
+javascript
+// Validar duplicado por caravana (único identificador)
+if (registros.find(r => r.caravana === car)) { 
+  alert(`🐄 La caravana ${car} ya está registrada. No se permiten duplicados.`); 
+  document.getElementById('caravana').value = '';
+  document.getElementById('caravana').focus();
+  return; 
+}
